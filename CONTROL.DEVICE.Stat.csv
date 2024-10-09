@@ -1,0 +1,70 @@
+Variable ,Type ,Field ,Description/Values 
+flags ,BITSET32,Bit 0: ADMReq,1 = AD mode requested
+,,,0 = AD mode not requested
+,,,(Q_AD_MODE_REQUEST)
+,,Bit 1: BrkTstRdy,1 = CONTROL is ready for brake test
+,,,0 = CONTROL is not ready for brake test
+,,Bit 2: BrkTstAct,1 = CONTROL is doing brake test
+,,,0 = CONTROL is not doing brake test
+,,Bit 3: BrkTstBrk,1 = CONTROL is braking (brake test) 0 = CONTROL is not braking (brakes released)
+,,Bit 4: AM,1 = CONTROL is engaged
+,,,0 = CONTROL is not engaged
+,,Bit 5: Drv,1 = CONTROL is driving
+,,,0 = CONTROL is not driving
+,,Bit 6: Brk,1 = CONTROL is braking
+,,,0 = CONTROL is not braking
+,,Bit 7: HQ,1 = Stand-still detected
+,,,0 = No stand-still detected
+,,Bit 8: Loc,1 = CONTROL is localized
+,,,0 = CONTROL is not localized
+,,,The CONTROL is localized iff the LRBG and the distance to it is known. In this case the variables lrbg and pos must be set correctly.
+,,,
+,,Bit 9: Mis,1 = CONTROL is on a mission
+,,,0 = CONTROL is not on a mission The CONTROL is on a mission iff it has a valid JP and a valid cab.
+,,Bit 10: LocMis,1 = CONTROL is localized on a mission
+,,,"0 = CONTROL is not localized on a mission The CONTROL is localized on a mission iff it has a position in the JP. In this case, the variable jppos must be set correctly."
+,,Bit 11: Fwd,1 = Driving direction is forward
+,,,0 = Driving direction is not forward (or unknown)
+,,Bit 12: CabA,1 = Active cab is A
+,,,0 = Active cab is not A
+,,Bit 13: CabB,1 = Active cab is B
+,,,0 = Active cab is B
+,,Bit 14: EB,1 = EB is signaled
+,,,0 = EB is not signaled
+,,Bit 15: Arvd,1 = CONTROL is arrived
+,,,0 = CONTROL is not arrived
+,,,The CONTROL is arrived iff it detected stand-still (HQ) at the final TP or the final TP has been overridden by more than 5m.
+,,Bit 16: DCL,1 = Train doors are closed and locked
+,,,0 = Train dorrs are not closed and locked
+,,Bit 17: Dwl,1 = CONTROL is dwelling
+,,,0 = CONTROL is not dwelling
+,,,"If the CONTROL is dwelling, the variable tdwell must be set correctly."
+,,Bit 18 .. Bit 31: -,Spare
+ctrl ,UINT8,-,CONTROL control value
+,,,0 = 0%
+,,,100 = 100%
+,,,101..255: invalid
+v ,UINT16,-,Current velocity in cm/s
+len ,UINT16,-,Train length in m
+lrbg ,UINT32,-,Last relevant balise group (LRBG)
+,,,Bit 0 .. Bit 2: 0 (N_PIG)
+,,,Bit 3 .. Bit 16: balise group ID (NID_BG)
+,,,Bit 17 .. Bit 26: country code (NID_C) Bit 27 .. Bit 31: 0
+pos ,INT32,-,Distance between train front end and the LRBG in cm. This value is negative if and only if the direction of the path from the LRBG to the train front end is opposite to the direction of the LRBG.
+stat ,UINT8,-,CONTROL status as of UNISIG SS-130 (M_CONTROLSTATUS):
+,,,0: CONTROL selected
+,,,1: CONTROL ready for engagement
+,,,2: CONTROL engaged
+,,,3: CONTROL disengaging
+,,,4: CONTROL failure
+,,,5..255: spare
+mis.beg.tp ,UINT32,-,"Mission start TP (timing point ID, NID_TP)"
+mis.beg.pos ,UINT32,-,Mission start position
+mis.beg.d ,UINT16,-,Mission start date in days since 2010-01-01
+mis.beg.t ,UINT32,-,Mission start time in seconds since midnight
+mis.end.tp ,UINT32,-,"Mission end TP (timing point ID, NID_TP)"
+mis.end.pos ,UINT32,-,Mission end position
+mis.end.d ,UINT16,-,Mission end date in days since 2010-01-01
+mis.end.t ,UINT32,-,Mission end time in seconds since midnight
+jppos ,UINT32,-,Position of the train front end within the JP
+tdwell ,UINT16,-,Dwell time in s

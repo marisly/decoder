@@ -1,0 +1,24 @@
+Variable ,Type ,Field ,Description/Values 
+flags,BITSET16,Bit 0: DEVICEAct,1 = DEVICE active
+,,,0 = DEVICE not active
+,,,"If and only if this bit is set, all other fields and variables are valid."
+,,Bit 1: ADMRel,1 = AD mode released
+,,,0 = AD mode not released
+,,,(Q_APPCOND)
+,,Bit 2: ADMAct,1 = AD mode active
+,,,0 = AD mode not active
+,,,(Q_ADMODE)
+,,Bit 3: CONTROLRel,1 = CONTROL released
+,,,0 = CONTROL not released
+,,,This bit mirrors the state of the corresponding relay.
+,,Bit 4: CONTROLDrvRel,1 = CONTROL driving released
+,,,0 = CONTROL driving not released This bit mirrors the state of the corresponding relay.
+,,Bit 5: EBAct,1 = EB active
+,,,0 = EB not active
+,,Bit 6: BrkTstAct,1 = Brake test active
+,,,0 = Brake test not active
+,,Bit 7: BrkTstBrk,1 = Braking requested
+,,,0 = Brake release requested This signal is valid if and only if BrkTstAct is set.
+,,Bit 8 .. Bit 15: -,spare
+tid,BCD32,-,Train ID (NID_OPERATIONAL)
+did,STRING16,-,Driver ID
