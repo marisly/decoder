@@ -1,6 +1,6 @@
 Main elements of the system in test: 
 
-![Network diagram example (1).png](https://prod-files-secure.s3.us-west-2.amazonaws.com/00376b66-90f1-4f52-9cda-e5b829a365dd/05c349ad-0cc8-42b7-bb5c-4d19037d4006/Network_diagram_example_(1).png)
+![Network diagram example (1)](https://github.com/user-attachments/assets/35dac7b6-c83b-4393-a29c-536d6e051f7c)
 
 Determine what parts are real and what needs to be simulated? 
 

@@ -1,5 +1,5 @@
 public class RecordType {
-    private boolean admReq;
+    private boolean adModeRequested;
     private boolean brakeTestReady;
     private boolean brakeTestActive;
     private boolean brakeTestBrake;
@@ -34,16 +34,15 @@ public class RecordType {
     private long jppos;
     private int tdwell;
     private boolean deviceActive;
-    private boolean admRel;
-    private boolean admAct;
-    private boolean controlRel;
-    private boolean controlDrvRel;
-    private boolean ebAct;
+    private boolean adModeReleased;
+    private boolean adModeActive;
+    private boolean controlReleased;
+    private boolean controlDrivingReleased ;
+    private boolean ebActive;
     private int trainId;
     private String driverId;
 
-    // Constructor and toString() method for displaying the object
-    public RecordType(boolean admReq, boolean brakeTestReady, boolean brakeTestActive, boolean brakeTestBrake,
+    public RecordType(boolean adModeRequested, boolean brakeTestReady, boolean brakeTestActive, boolean brakeTestBrake,
                       boolean controlEngaged, boolean controlDriving, boolean controlBraking, boolean standStillDetected,
                       boolean controlLocalized, boolean controlOnMission, boolean controlLocalizedOnMission, boolean drivingForward,
                       boolean activeCabA, boolean activeCabB, boolean ebSignaled, boolean controlArrived, boolean doorsClosedLocked,
@@ -51,7 +50,7 @@ public class RecordType {
                       int controlStatus, long missionStartTP, long missionStartPos, int missionStartDate,
                       long missionStartTime, long missionEndTP, long missionEndPos, int missionEndDate,
                       long missionEndTime, long jppos, int tdwell) {
-        this.admReq = admReq;
+        this.adModeRequested = adModeRequested;
         this.brakeTestReady = brakeTestReady;
         this.brakeTestActive = brakeTestActive;
         this.brakeTestBrake = brakeTestBrake;
@@ -87,26 +86,39 @@ public class RecordType {
         this.tdwell = tdwell;
     }
 
-    public RecordType(boolean deviceActive, boolean admRel, boolean admAct, boolean controlRel,
-                      boolean controlDrvRel, boolean ebAct, boolean brakeTestActive,
+    public String toStringDeviceControlStat() {
+        return "RecordType{" +
+                "deviceActive=" + deviceActive +
+                ", adModeReleased=" + adModeReleased +
+                ", adModeActive=" + adModeActive +
+                ", controlReleased=" + controlReleased +
+                ", controlDrivingReleased=" + controlDrivingReleased+
+                ", ebActive=" + ebActive +
+                ", brakeTestActive=" + brakeTestActive +
+                ", brakeTestBrake=" + brakeTestBrake +
+                ", trainId=" + trainId +
+                ", driverId='" + driverId + '\'' +
+                '}';
+    }
+
+    public RecordType(boolean deviceActive, boolean adModeReleased, boolean adModeActive, boolean controlReleased,
+                      boolean controlDrivingReleased , boolean ebActive, boolean brakeTestActive,
                       boolean brakeTestBrake, int trainId, String driverId) {
-        // Initialize only the fields specific to DEVICE.CONTROL.Stat
         this.deviceActive = deviceActive;
-        this.admRel = admRel;
-        this.admAct = admAct;
-        this.controlRel = controlRel;
-        this.controlDrvRel = controlDrvRel;
-        this.ebAct = ebAct;
+        this.adModeReleased = adModeReleased;
+        this.adModeActive = adModeActive;
+        this.controlReleased = controlReleased;
+        this.controlDrivingReleased  = controlDrivingReleased ;
+        this.ebActive = ebActive;
         this.brakeTestActive = brakeTestActive;
         this.brakeTestBrake = brakeTestBrake;
         this.trainId = trainId;
         this.driverId = driverId;
     }
 
-    @Override
-    public String toString() {
+    public String toStringControlDeviceStat() {
         return "RecordType{" +
-                "admReq=" + admReq +
+                "adModeRequested=" + adModeRequested +
                 ", brakeTestReady=" + brakeTestReady +
                 ", brakeTestActive=" + brakeTestActive +
                 ", brakeTestBrake=" + brakeTestBrake +
@@ -140,17 +152,6 @@ public class RecordType {
                 ", missionEndTime=" + missionEndTime +
                 ", jppos=" + jppos +
                 ", tdwell=" + tdwell +
-                ", deviceActive=" + deviceActive +
-                ", admRel=" + admRel +
-                ", admAct=" + admAct +
-                ", controlRel=" + controlRel +
-                ", controlDrvRel=" + controlDrvRel +
-                ", ebAct=" + ebAct +
-                ", trainId=" + trainId +
-                ", driverId='" + driverId + '\'' +
-
                 '}';
     }
-
-
 }

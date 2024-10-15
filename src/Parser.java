@@ -12,11 +12,11 @@ public class Parser {
         // Decode BITSET16 flags (2 bytes)
         int flags = Short.toUnsignedInt(buffer.getShort());
         boolean deviceActive = (flags & (1 << 0)) != 0;
-        boolean admRel = (flags & (1 << 1)) != 0;
-        boolean admAct = (flags & (1 << 2)) != 0;
-        boolean controlRel = (flags & (1 << 3)) != 0;
-        boolean controlDrvRel = (flags & (1 << 4)) != 0;
-        boolean ebAct = (flags & (1 << 5)) != 0;
+        boolean adModeReleased = (flags & (1 << 1)) != 0;
+        boolean adModeActive = (flags & (1 << 2)) != 0;
+        boolean controlReleased = (flags & (1 << 3)) != 0;
+        boolean controlDrivingReleased = (flags & (1 << 4)) != 0;
+        boolean ebActive = (flags & (1 << 5)) != 0;
         boolean brakeTestActive = (flags & (1 << 6)) != 0;
         boolean brakeTestBrake = (flags & (1 << 7)) != 0;
 
@@ -26,9 +26,10 @@ public class Parser {
         // Decode STRING16 Driver ID (16 bytes)
         String driverId = decodeString16(buffer);
 
-        return new RecordType(deviceActive, admRel, admAct, controlRel, controlDrvRel,
-                ebAct, brakeTestActive, brakeTestBrake, trainId, driverId);
+        return new RecordType(deviceActive, adModeReleased, adModeActive, controlReleased, controlDrivingReleased,
+                ebActive, brakeTestActive, brakeTestBrake, trainId, driverId);
     }
+
 
     // Decodes CONTROL.DEVICE.Stat data structure
     public RecordType decodeControlDeviceStat(byte[] rawData) {
@@ -37,7 +38,7 @@ public class Parser {
 
         // Decode BITSET32 flags (4 bytes)
         int flags = buffer.getInt();
-        boolean admReq = (flags & (1 << 0)) != 0;
+        boolean adModeRequested = (flags & (1 << 0)) != 0;
         boolean brakeTestReady = (flags & (1 << 1)) != 0;
         boolean brakeTestActive = (flags & (1 << 2)) != 0;
         boolean brakeTestBrake = (flags & (1 << 3)) != 0;
@@ -46,6 +47,10 @@ public class Parser {
         boolean controlBraking = (flags & (1 << 6)) != 0;
         boolean standStillDetected = (flags & (1 << 7)) != 0;
         boolean controlLocalized = (flags & (1 << 8)) != 0;
+        //The CONTROL is localized iff the LRBG
+        //and the distance to it is known. In this case
+        //the variables lrbg and pos must be set
+        //correctly
         boolean controlOnMission = (flags & (1 << 9)) != 0;
         boolean controlLocalizedOnMission = (flags & (1 << 10)) != 0;
         boolean drivingForward = (flags & (1 << 11)) != 0;
@@ -91,7 +96,7 @@ public class Parser {
         // Decode UINT16 tdwell (Dwell time in seconds)
         int tdwell = Short.toUnsignedInt(buffer.getShort());
 
-        return new RecordType(admReq, brakeTestReady, brakeTestActive, brakeTestBrake,
+        return new RecordType(adModeRequested, brakeTestReady, brakeTestActive, brakeTestBrake,
                 controlEngaged, controlDriving, controlBraking, standStillDetected,
                 controlLocalized, controlOnMission, controlLocalizedOnMission, drivingForward,
                 activeCabA, activeCabB, ebSignaled, controlArrived, doorsClosedLocked,
@@ -101,7 +106,6 @@ public class Parser {
                 missionEndTime, jppos, tdwell);
     }
 
-    // Helper method to decode BCD32 values (for Train ID)
     private int decodeBCD32(ByteBuffer buffer) {
         int bcdValue = 0;
         for (int i = 0; i < 4; i++) {
@@ -113,7 +117,6 @@ public class Parser {
         return bcdValue;
     }
 
-    // Helper method to decode STRING16 values (for Driver ID)
     private String decodeString16(ByteBuffer buffer) {
         byte[] stringBytes = new byte[16];
         buffer.get(stringBytes);
